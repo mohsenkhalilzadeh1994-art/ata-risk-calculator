@@ -68,22 +68,18 @@ function Field({
 function YesNoSwitch({
   value,
   onChange,
-  disabled,
+  disabled = false,
 }: {
   value: YesNo;
   onChange: (v: YesNo) => void;
   disabled?: boolean;
 }) {
   return (
-    <div
-      className={`flex items-center gap-3 ${
-        disabled ? "opacity-50 pointer-events-none" : ""
-      }`}
-    >
+    <div className={`flex items-center gap-3 ${disabled ? "opacity-50" : ""}`}>
       <Switch
-        disabled={disabled}
         checked={value === "Yes"}
         onCheckedChange={(c) => onChange(c ? "Yes" : "No")}
+        disabled={disabled}
       />
       <span className="text-sm">{value}</span>
     </div>
@@ -324,99 +320,96 @@ export default function Calculator() {
                     }
                   />
                 </Field>
-                <Field
-                  title="Multifocality (PTC)"
-                  subtitle={isPTC ? "" : "Disabled for FTC/OTC"}
-                >
-                  <Select
-                    value={inputs.multifocalityPTC}
-                    onValueChange={(v) =>
-                      setInputs((p) => ({
-                        ...p,
-                        multifocalityPTC: v as Inputs["multifocalityPTC"],
-                      }))
-                    }
-                    disabled={!isPTC}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select multifocality" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {MULTIFOCALITY_PTC.map((o) => (
-                        <SelectItem key={o} value={o}>
-                          {o}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </Field>
+                {isPTC && (
+                  <>
+                    <Field title="Multifocality (PTC)">
+                      <Select
+                        value={inputs.multifocalityPTC}
+                        onValueChange={(v) =>
+                          setInputs((p) => ({
+                            ...p,
+                            multifocalityPTC: v as Inputs["multifocalityPTC"],
+                          }))
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select multifocality" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {MULTIFOCALITY_PTC.map((o) => (
+                            <SelectItem key={o} value={o}>
+                              {o}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
 
-                <Field
-                  title="Vascular invasion (PTC)"
-                  subtitle={isPTC ? "" : "Disabled for FTC/OTC"}
-                >
-                  <Select
-                    value={inputs.viPTC}
-                    onValueChange={(v) =>
-                      setInputs((p) => ({ ...p, viPTC: v as Inputs["viPTC"] }))
-                    }
-                    disabled={!isPTC}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select VI (PTC)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {VI_PTC.map((o) => (
-                        <SelectItem key={o} value={o}>
-                          {o}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </Field>
+                    <Field title="Vascular invasion (PTC)">
+                      <Select
+                        value={inputs.viPTC}
+                        onValueChange={(v) =>
+                          setInputs((p) => ({
+                            ...p,
+                            viPTC: v as Inputs["viPTC"],
+                          }))
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select VI (PTC)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {VI_PTC.map((o) => (
+                            <SelectItem key={o} value={o}>
+                              {o}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </>
+                )}
+                {isNonPTC && (
+                  <>
+                    <Field title="Vascular invasion (FTC/OTC)">
+                      <Select
+                        value={inputs.viFtcOtc}
+                        onValueChange={(v) =>
+                          setInputs((p) => ({
+                            ...p,
+                            viFtcOtc: v as Inputs["viFtcOtc"],
+                          }))
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select VI (FTC/OTC)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {VI_FTC_OTC.map((o) => (
+                            <SelectItem key={o} value={o}>
+                              {o}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
 
-                <Field
-                  title="Vascular invasion (FTC/OTC)"
-                  subtitle={isNonPTC ? "" : "Disabled for PTC"}
-                >
-                  <Select
-                    value={inputs.viFtcOtc}
-                    onValueChange={(v) =>
-                      setInputs((p) => ({
-                        ...p,
-                        viFtcOtc: v as Inputs["viFtcOtc"],
-                      }))
-                    }
-                    disabled={!isNonPTC}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select VI (FTC/OTC)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {VI_FTC_OTC.map((o) => (
-                        <SelectItem key={o} value={o}>
-                          {o}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </Field>
-
-                <Field
-                  title="Encapsulated angioinvasive?"
-                  subtitle={isNonPTC ? "FTC/OTC only" : "Disabled for PTC"}
-                >
-                  <YesNoSwitch
-                    value={inputs.encapsulatedAngioinvasive_FtcOtc}
-                    onChange={(v) =>
-                      setInputs((p) => ({
-                        ...p,
-                        encapsulatedAngioinvasive_FtcOtc: v,
-                      }))
-                    }
-                    disabled={!isNonPTC}
-                  />
-                </Field>
+                    <Field
+                      title="Encapsulated angioinvasive?"
+                      subtitle="FTC/OTC only"
+                    >
+                      <YesNoSwitch
+                        value={inputs.encapsulatedAngioinvasive_FtcOtc}
+                        onChange={(v) =>
+                          setInputs((p) => ({
+                            ...p,
+                            encapsulatedAngioinvasive_FtcOtc: v,
+                          }))
+                        }
+                      />
+                    </Field>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
