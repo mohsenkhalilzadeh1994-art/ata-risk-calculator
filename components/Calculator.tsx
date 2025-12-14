@@ -324,17 +324,6 @@ export default function Calculator() {
                     }
                   />
                 </Field>
-
-                <div className="space-y-2 rounded-xl border border-zinc-200 bg-white/60 p-3">
-                  <div className="text-sm font-semibold text-zinc-900">
-                    Histology-dependent fields
-                  </div>
-                  <div className="text-xs text-zinc-600">
-                    PTC-only and FTC/OTC-only inputs auto-disable to prevent
-                    accidental triggers.
-                  </div>
-                </div>
-
                 <Field
                   title="Multifocality (PTC)"
                   subtitle={isPTC ? "" : "Disabled for FTC/OTC"}
