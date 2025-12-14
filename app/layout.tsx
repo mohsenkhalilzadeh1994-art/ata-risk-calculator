@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ATA 2025 Risk Calculator",
   description: "Generated at Ege University, Department of Nuclear Medicine",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
