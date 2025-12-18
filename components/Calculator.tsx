@@ -152,7 +152,7 @@ export default function Calculator() {
               ATA 2025 Risk Calculator
             </h1>
             <p className="text-sm text-zinc-600">
-              Developed at Ege University, Department of Nuclear Medicine.
+              Educational and clinical decision-support use only.
             </p>
           </div>
 
