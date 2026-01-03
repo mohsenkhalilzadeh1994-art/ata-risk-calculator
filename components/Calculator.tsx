@@ -157,11 +157,6 @@ export default function Calculator() {
           </div>
 
           {/* Sağ taraf: Logo */}
-          <img
-            src="/ege-logo.png"
-            alt="Ege University"
-            className="h-10 w-auto opacity-90"
-          />
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -291,18 +286,6 @@ export default function Calculator() {
               <Separator />
 
               <div className="grid gap-5 md:grid-cols-2">
-                <Field
-                  title="Aggressive histology"
-                  subtitle="tall / hobnail / columnar etc."
-                >
-                  <YesNoSwitch
-                    value={inputs.aggressiveHistology}
-                    onChange={(v) =>
-                      setInputs((p) => ({ ...p, aggressiveHistology: v }))
-                    }
-                  />
-                </Field>
-
                 <Field title="Poor differentiation / high grade">
                   <YesNoSwitch
                     value={inputs.poorDiffHighGrade}
@@ -322,6 +305,17 @@ export default function Calculator() {
                 </Field>
                 {isPTC && (
                   <>
+                    <Field
+                      title="Aggressive histology"
+                      subtitle="tall / hobnail / columnar etc."
+                    >
+                      <YesNoSwitch
+                        value={inputs.aggressiveHistology}
+                        onChange={(v) =>
+                          setInputs((p) => ({ ...p, aggressiveHistology: v }))
+                        }
+                      />
+                    </Field>
                     <Field title="Multifocality (PTC)">
                       <Select
                         value={inputs.multifocalityPTC}
@@ -371,7 +365,7 @@ export default function Calculator() {
                 )}
                 {isNonPTC && (
                   <>
-                    <Field title="Vascular invasion (FTC/OTC)">
+                    <Field title="Invasion pattern">
                       <Select
                         value={inputs.viFtcOtc}
                         onValueChange={(v) =>
@@ -392,21 +386,6 @@ export default function Calculator() {
                           ))}
                         </SelectContent>
                       </Select>
-                    </Field>
-
-                    <Field
-                      title="Encapsulated angioinvasive?"
-                      subtitle="FTC/OTC only"
-                    >
-                      <YesNoSwitch
-                        value={inputs.encapsulatedAngioinvasive_FtcOtc}
-                        onChange={(v) =>
-                          setInputs((p) => ({
-                            ...p,
-                            encapsulatedAngioinvasive_FtcOtc: v,
-                          }))
-                        }
-                      />
                     </Field>
                   </>
                 )}

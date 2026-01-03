@@ -37,4 +37,9 @@ export const MULTIFOCALITY_PTC = [
 
 // Vascular invasion
 export const VI_PTC = ["None", "Present (Yes)"] as const;
-export const VI_FTC_OTC = ["None", "Limited", "Extensive"] as const;
+export const VI_FTC_OTC = [
+  "Minimally invasive (capsular only)",
+  "Limited angioinvasive (<4 vessels)",
+  "Extensive angioinvasive (≥4 vessels)",
+  "Widely invasive (extracapsular)",
+] as const;

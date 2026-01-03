@@ -117,7 +117,15 @@ function calcLowIntermediateCount(i: Inputs): {
   }
 
   // R1 anterior: şemada Low tarafında kalabiliyor -> faktör saymıyoruz
-
+  if (
+    i.histology !== "PTC and variants" &&
+    i.viFtcOtc === "Limited angioinvasive (<4 vessels)"
+  ) {
+    c++;
+    r.push(
+      "FTC/OTC limited angioinvasion (<4 vessels) → Low-Intermediate risk factor"
+    );
+  }
   return { count: c, reasons: r };
 }
 
@@ -147,17 +155,21 @@ export function calculateRisk(i: Inputs): Result {
     highTriggers.push("Poor differentiation / high grade");
 
   // Non-PTC: extensive VI → High
-  if (i.histology !== "PTC and variants" && i.viFtcOtc === "Extensive") {
-    highTriggers.push("Non-PTC extensive vascular invasion");
+  // FTC / IEFVPTC / OTC invasion logic
+  // FTC / IEFVPTC / OTC: invasion rule
+  // Minimally invasive -> Low (no trigger)
+  // Limited angioinvasion -> handled as LI factor in calcLowIntermediateCount()
+  // Extensive angioinvasion OR Widely invasive -> High
+  if (i.histology !== "PTC and variants") {
+    if (
+      i.viFtcOtc === "Extensive angioinvasive (≥4 vessels)" ||
+      i.viFtcOtc === "Widely invasive (extracapsular)"
+    ) {
+      highTriggers.push("FTC/OTC: Extensive angioinvasion or widely invasive");
+    }
   }
 
-  // Non-PTC: encapsulated angioinvasive → High
-  if (
-    i.histology !== "PTC and variants" &&
-    isYes(i.encapsulatedAngioinvasive_FtcOtc)
-  ) {
-    highTriggers.push("Encapsulated angioinvasive (FTC/OTC) → High trigger");
-  }
+  // 5) FTC/OTC: Limited angioinvasion => LI factor
 
   // ✅ Critical rule (şemadaki gibi): T3a + microscopic ETE → HIGH
   if (i.tGroup === "T3a (intrathyroidal)" && isYes(i.microscopicETE)) {
